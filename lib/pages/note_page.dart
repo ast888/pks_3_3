@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import '../models/note.dart';
+import '../models/cart.dart';
 
 class NotePage extends StatelessWidget {
   final Note note;
+  final Cart cart; // Добавили объект корзины
 
-  const NotePage({super.key, required this.note});
+  const NotePage({super.key, required this.note, required this.cart});
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +30,25 @@ class NotePage extends StatelessWidget {
                 style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(
-                note.description,
-                style: const TextStyle(fontSize: 20),
-              ),
-              // Отображаем цену товара
-
-              const SizedBox(height: 10),
               Center(
                 child: Image(
                   image: AssetImage(note.photo_id),
                 ),
               ),
+              const SizedBox(height: 20),
+              // Раздел технических характеристик
+              const Text(
+                'Технические характеристики:',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Text('Оперативная память: ${note.ram}'),
+              Text('Количество SIM-карт: ${note.simCards}'),
+              Text('Поддержка 5G: ${note.supports5G}'),
+              Text('Диагональ экрана: ${note.screenSize}'),
+              Text('Частота обновления: ${note.refreshRate}'),
+              Text('Камера: ${note.camera}'),
+              Text('Процессор: ${note.processor}'),
               const SizedBox(height: 20),
               Center(
                 child: SizedBox(
@@ -51,19 +59,20 @@ class NotePage extends StatelessWidget {
                       padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
                     ),
                     onPressed: () {
+                      cart.addItem(note); // Добавляем товар в корзину
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Спасибо за покупку, чел',
+                            'Спасибо за покупку',
                             style: TextStyle(fontSize: 36),
                           ),
-                          backgroundColor: Colors.black,
+                          backgroundColor: Color.fromARGB(255, 0, 255, 13),
                         ),
                       );
                     },
                     child: Text(
-                      'Купить за ${note.price}', // Изменено на отображение цены в кнопке
+                      'Купить за ${note.price}', // Отображение цены в кнопке
                       style: TextStyle(fontSize: 24, color: const Color.fromARGB(255, 255, 255, 255)),
                     ),
                   ),
